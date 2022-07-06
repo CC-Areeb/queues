@@ -1,0 +1,39 @@
+In laravel, a job is used so that things can be processed like how we people stand in a line and 1 person's
+proecess is done and the other person behind it moves forward so similarly like that we use Jobs
+
+We will make a job by using the atisan command as shown ---> "php artisan make:job Your_Job_File_Name"
+
+Inside the job file we have 4 traits being used
+1 - Dispatchable -----> this creates methods to dispatch itself
+2 - InteractsWithQueue ----> this allows jobs to controll it's relationship with queue
+3 - Queueable -------> defines how laravel should post this job to the queue
+4 - SerializesModels ---->  gives jobs the ability to serialize and deserialize eloquent models
+
+this file also has a constructor for doing stuff inside the handle methods since it accepts the data that is
+needed
+
+
+NOTE: The double quotes ("") is for emphasis and nothing to do when writing that peice of code
+
+
+inside the handle method we will send the mailable here as shown below:
+    "Mail::to('sample@example.com')->send(new SendMailable());"
+
+
+next in the CLI, type the command as shown ------> "php artisan queue:table"
+the above command will make a migration for us and then run the "php artisan migrate" command to 
+actually migrate the files.
+
+After migration we will make a controller that will have a method to dispatch a job.
+
+We need few things, first is that we setup our mailtrap credentials inside out .env file for our mails 
+
+
+To make sure our queues and jobs are working, we need to perform the following command -----> "php artisan queue:work"
+the above command will start listening to our queues
+
+we can also set a time interval that will be responsible for how long the queue will be processed by using the
+delay method after we used the dispatch method
+
+sample code for delay --------> " dispatch(new Your_Job_File())->delay(now()->addMinutes(1)); "
+you can also use other methods besides the addMinutes method
